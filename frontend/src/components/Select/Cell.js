@@ -2,12 +2,9 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
 import Button from '@material-ui/core/Button';
-import { palette } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChairIcon from '@mui/icons-material/Chair';
-import {QryEmpty} from '../../util/ApiFunc'
 
 const theme = createTheme({
     palette: {
@@ -20,6 +17,10 @@ const theme = createTheme({
 
 
 const Cell = ({where, cellInfo, coverOnClick, register}) => {
+
+    const isdisabled = ((cellInfo.registered) || (register === 1))
+
+    console.log(cellInfo);
     const buttonOnClick = async (cellInfo) => {
         // const ret = await QryEmpty(1, cellInfo.id); // where == 0 for shinguan(bug?)
         // console.log(ret);
@@ -34,9 +35,9 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
     return(
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        {cellInfo.registered === false && 
+        {cellInfo.ifPersonSeat === false && 
         (where === 1) && <Grid>
-            {((cellInfo.id % 8 === 1) || (cellInfo.id % 8 === 3) || (cellInfo.id % 8 === 7)) &&
+            {((cellInfo.id % 8 === 0) || (cellInfo.id % 8 === 2) || (cellInfo.id % 8 === 6)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
@@ -47,6 +48,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         marginLeft: '2vh',
                         borderRadius: '5%',
                     }}
+                disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -60,7 +62,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.id % 8 === 2) || (cellInfo.id % 8 === 6) || (cellInfo.id % 8 === 0)) &&
+            {((cellInfo.id % 8 === 1) || (cellInfo.id % 8 === 5) || (cellInfo.id % 8 === 7)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
@@ -71,6 +73,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         marginRight: '2vh',
                         borderRadius: '5%',
                     }}
+                    disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -84,7 +87,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.id % 8 === 4) || (cellInfo.id % 8 === 5)) &&
+            {((cellInfo.id % 8 === 3) || (cellInfo.id % 8 === 4)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
@@ -94,6 +97,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         margin: '0.5vh',
                         borderRadius: '5%',
                     }}
+                    disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -110,7 +114,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
         </Grid>
         }
 
-        {cellInfo.registered === false && 
+        {cellInfo.ifPersonSeat === false && 
         (where === 0) && <Grid>
             {((cellInfo.c === 10)) && 
                 <Button onClick={() => buttonOnClick(cellInfo) }
@@ -123,6 +127,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         marginLeft: '4vh',
                         borderRadius: '5%',
                     }}
+                    disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -148,6 +153,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         marginRight: '4vh',
                         borderRadius: '5%',
                     }}
+                    disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -161,7 +167,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.c % 20 !== 10) && (cellInfo.c % 10 !== 9)) && (cellInfo.id != 96) &&
+            {((cellInfo.c % 20 !== 10) && (cellInfo.c % 10 !== 9)) && (cellInfo.id != 95) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
@@ -171,6 +177,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         margin: '0.5vh',
                         borderRadius: '5%',
                     }}
+                    disabled={isdisabled}
                 >
                     <Box sx={{
                     display: 'flex',
@@ -201,15 +208,15 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
 
 
 
-        {cellInfo.registered === true && 
+        {cellInfo.ifPersonSeat === true && 
         (where === 1) && <Grid>
-            {((cellInfo.id % 8 === 1) || (cellInfo.id % 8 === 3) || (cellInfo.id % 8 === 7)) &&
+            {((cellInfo.id % 8 === 0) || (cellInfo.id % 8 === 2) || (cellInfo.id % 8 === 6)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         marginLeft: '2vh',
                         borderRadius: '5%',
@@ -227,13 +234,13 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.id % 8 === 2) || (cellInfo.id % 8 === 6) || (cellInfo.id % 8 === 0)) &&
+            {((cellInfo.id % 8 === 1) || (cellInfo.id % 8 === 5) || (cellInfo.id % 8 === 7)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         marginRight: '2vh',
                         borderRadius: '5%',
@@ -251,13 +258,13 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.id % 8 === 4) || (cellInfo.id % 8 === 5)) &&
+            {((cellInfo.id % 8 === 3) || (cellInfo.id % 8 === 4)) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         borderRadius: '5%',
                     }}
@@ -277,7 +284,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
         </Grid>
         }
 
-        {cellInfo.registered === true && 
+        {cellInfo.ifPersonSeat === true && 
         (where === 0) && <Grid>
             {((cellInfo.c === 10)) && 
                 <Button onClick={() => buttonOnClick(cellInfo) }
@@ -285,7 +292,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         marginLeft: '4vh',
                         borderRadius: '5%',
@@ -310,7 +317,7 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         marginRight: '4vh',
                         borderRadius: '5%',
@@ -328,13 +335,13 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
                     </Box>
                 </Button>
             }
-            {((cellInfo.c % 20 !== 10) && (cellInfo.c % 10 !== 9)) && (cellInfo.id != 96) &&
+            {((cellInfo.c % 20 !== 10) && (cellInfo.c % 10 !== 9)) && (cellInfo.id != 95) &&
                 <Button onClick={() => buttonOnClick(cellInfo)}
                 style={{maxWidth: '10vh',
                         maxHeight: '10vh',
                         minWidth: '10vh',
                         minHeight: '10vh',
-                        backgroundColor: "#6d6e6d",
+                        backgroundColor: "#ebd981",
                         margin: '0.5vh',
                         borderRadius: '5%',
                     }}
@@ -359,3 +366,31 @@ const Cell = ({where, cellInfo, coverOnClick, register}) => {
     )
 }
 export default Cell;
+
+
+
+/*                                                      
+__________________________________________________________________________
+__________________________________________________________________________
+__________________________________________________________________________
+________________________________████████__________________________________
+______________________________██________██________________________________
+____________________________██▒▒▒▒________██______________________________
+__________________________██▒▒▒▒▒▒______▒▒▒▒██____________________________
+__________________________██▒▒▒▒▒▒______▒▒▒▒██____________________________
+________________________██__▒▒▒▒________▒▒▒▒▒▒██__________________________
+________________________██________________▒▒▒▒██__________________________
+______________________██▒▒______▒▒▒▒▒▒__________██________________________
+______________________██https://reurl.cc/10aWnV_██________________________
+______________________██______▒▒▒▒▒▒▒▒▒▒____▒▒▒▒██________________________
+______________________██▒▒▒▒__▒▒▒▒▒▒▒▒▒▒__▒▒▒▒▒▒██________________________
+________________________██▒▒▒▒__▒▒▒▒▒▒____▒▒▒▒██__________________________
+________________________██▒▒▒▒____________▒▒▒▒██__________________________
+__________________________██▒▒______________██____________________________
+____________________________████________████______________________________
+________________________________████████__________________________________
+__________________________________________________________________________
+__________________________________________________________________________
+__________________________________________________________________________
+
+*/

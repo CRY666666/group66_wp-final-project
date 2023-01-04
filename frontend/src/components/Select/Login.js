@@ -14,16 +14,20 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {AcntRegister, LogCheck, GetAll} from '../../util/ApiFunc'
 import seatHandling from '../../util/seatHandling';
+import Error from './Error';
+
 
 // some const
 const ShinGuan = 0, Lishin = 1;
 const rent = 0, ret = 1, search = 2;
 const login = 0, wheretosit = 1, selecting = 2;
+// let loginReturn;
 
-const Login = ({register, person, setPerson, setSelectState, forgetOnClick, setSeatLiShin, setSeatShinGuan}) => {
+const Login = ({register, person, setPerson, setSelectState, forgetOnClick, setSeatLiShin, setSeatShinGuan, backToHomeOnClick}) => {
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [error, setError] = useState(false);
+    
 
     const accountChange = (e) => {
         setAccount(e.target.value)
@@ -32,31 +36,37 @@ const Login = ({register, person, setPerson, setSelectState, forgetOnClick, setS
         setPassword(e.target.value)
     }
     const submitOnClick = async () => {
-        let newperson = {account: account, password: password};
-        setPerson(newperson);
+        setPerson({account: account, password: password});
+        
         let people = await GetAll();
         let loginReturn;
         if(register === rent) loginReturn = await AcntRegister(account, password);
         else loginReturn = await LogCheck(account, password);
 
+        console.log(person);
         let SeatLiShin, SeatShinGuan;
-        SeatLiShin = seatHandling(register, people, person, Lishin);  
-        SeatShinGuan = seatHandling(register, people, person, ShinGuan);
+        SeatLiShin = seatHandling(register, people, {account: account, password: password}, Lishin);  
+        SeatShinGuan = seatHandling(register, people, {account: account, password: password}, ShinGuan);
+
+        console.log(SeatLiShin);
 
         setSeatLiShin(SeatLiShin);
         setSeatShinGuan(SeatShinGuan);
         
         setAccount('');
         setPassword('');
-        if(loginReturn.valid === false) console.log(loginReturn.message);
+        if(loginReturn.valid === false){
+            console.log(loginReturn.message);
+            setError(true);
+        }
         else                            setSelectState(wheretosit);
     }
 
     return(
         <ThemeProvider theme={createTheme()}>
-            {/* <button onClick={submitOnClick}></button> */}
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
         <CssBaseline />
+        {/* <button onClick={submitOnClick}></button> */}
+        {error === false && <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} >
             <Box
                 sx={{
                 my: 8,
@@ -152,7 +162,10 @@ const Login = ({register, person, setPerson, setSelectState, forgetOnClick, setS
                 </Grid>
                 </Box>
             </Box>
+            
         </Grid>
+        }
+        {error === true  && <Error backToHomeOnClick={backToHomeOnClick} register={register}/>}
         </ThemeProvider>
     )
 }
