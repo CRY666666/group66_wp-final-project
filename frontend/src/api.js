@@ -10,5 +10,5 @@ const WS_URL =
     ? window.location.origin.replace(/^http/, "ws")
     : "ws://localhost:4000";
 
-export default api = axios.create({ baseURL: API_ROOT });
-// export default ws = new WebSocket(WS_URL);
+// export default api = axios.create({ baseURL: API_ROOT });
+export default ws = new WebSocket(WS_URL);
